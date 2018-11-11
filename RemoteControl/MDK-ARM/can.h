@@ -141,7 +141,7 @@ void PID_Reset(PID_Regulator_t *pid);
 	&PID_Reset,\
 }\
 
-void set_Chassis_Pid_Speed(Can chassis, rc_info_t* rc);
+void set_Chassis_Pid_Speed(Can, chassis_ctrl *, rc_info_t *);
 void GetEncoderBias(volatile Encoder *v,CAN_RxHeaderTypeDef *rxHeader,uint8_t* msg);
 void EncoderProcess(volatile Encoder *v, uint8_t* msg);
 #endif

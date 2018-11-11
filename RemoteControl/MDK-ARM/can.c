@@ -382,13 +382,13 @@ void send_Chassis_Msg(Can* chassis, int16_t cm1_iq,int16_t cm2_iq,int16_t cm3_iq
     canTxMsg0[7] = (uint8_t)cm4_iq;
     Can_Transmit(chassis, &hcan1, canTxMsg0);
 }
-void set_Chassis_Pid_Speed(Can chassis, rc_info_t* rc)
+void set_Chassis_Pid_Speed(Can chassis, chassis_ctrl * chassis_ref, rc_info_t * rc)
 {
 	HAL_Delay(1);
-	CM1SpeedPID.ref =  (-rc->ch2*0.45*0.075 + rc->ch1*0.45*0.075 + rc->ch3*0.30*0.075)*18;
-	CM2SpeedPID.ref = (rc->ch2*0.45*0.075 + rc->ch1*0.45*0.075 + rc->ch3*0.30*0.075)*18;
-	CM3SpeedPID.ref = (rc->ch2*0.45*0.075 - rc->ch1*0.45*0.075 + rc->ch3*0.30*0.075)*18;
-	CM4SpeedPID.ref = (-rc->ch2*0.45*0.075 - rc->ch1*0.45*0.075 + rc->ch3*0.30*0.075)*18; 
+	CM1SpeedPID.ref =  (-chassis_ref->forward_back_speed_ref*0.075 + chassis_ref->left_right_speed_ref*0.075 + chassis_ref->rotation_speed_ref*0.075)*18;
+	CM2SpeedPID.ref = (chassis_ref->forward_back_speed_ref*0.075 + chassis_ref->left_right_speed_ref*0.075 + chassis_ref->rotation_speed_ref*0.075)*18;
+	CM3SpeedPID.ref = (chassis_ref->forward_back_speed_ref*0.075 - chassis_ref->left_right_speed_ref*0.075 + chassis_ref->rotation_speed_ref*0.075)*18;
+	CM4SpeedPID.ref = (-chassis_ref->forward_back_speed_ref*0.075 - chassis_ref->left_right_speed_ref*0.075 + chassis_ref->rotation_speed_ref*0.075)*18; 
   CM1SpeedPID.fdb = CM1Encoder.filter_rate;
 	CM2SpeedPID.fdb = CM2Encoder.filter_rate;
 	CM3SpeedPID.fdb = CM3Encoder.filter_rate;

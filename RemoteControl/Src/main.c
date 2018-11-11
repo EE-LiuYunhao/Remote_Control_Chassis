@@ -54,6 +54,7 @@
 /* USER CODE BEGIN PV */
 /* Private variables ---------------------------------------------------------*/
 extern rc_info_t rc;
+extern chassis_ctrl chassis_ref;
 char buf[200];
 int count;
 uint8_t canRxMsg[8];
@@ -123,7 +124,7 @@ int main(void)
   /* USER CODE END WHILE */
      
   /* USER CODE BEGIN 3 */
-		set_Chassis_Pid_Speed(chassis, &rc);
+		set_Chassis_Pid_Speed(chassis, &chassis_ref, &rc);
 	  sprintf(buf, "CH1: %4d  CH2: %4d  CH3: %4d  CH4: %4d  SW1: %1d  SW2: %1d \n", rc.ch1, rc.ch2, rc.ch3, rc.ch4, rc.sw1, rc.sw2);
 		//HAL_UART_Transmit(&huart6, (uint8_t *)buf, (COUNTOF(buf) - 1), 55);
 		;	

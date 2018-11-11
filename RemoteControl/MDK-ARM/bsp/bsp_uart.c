@@ -13,8 +13,14 @@
 #include "bsp_uart.h"
 #include "usart.h"
 #include "main.h"
+#include "keyboard_def.h"
+
+#define RIGHT_LEFT_POSI  KEY_D
+#define RIGHT_LEFT_NEGI  KEY_A
+
 uint8_t   dbus_buf[DBUS_BUFLEN];
 rc_info_t rc;
+chassis_ctrl chassis_ref;
 
 
 
@@ -89,7 +95,15 @@ void rc_callback_handler(rc_info_t *rc, uint8_t *buff)
   rc->ch3 -= 1024;
   rc->ch4 = (buff[4] >> 1 | buff[5] << 7) & 0x07FF;
   rc->ch4 -= 1024;
-
+	
+	rc->kb_ws = (buff[14] == KEY_W)*1 + (buff[14]== KEY_S)*(-1);
+	rc->kb_ad = (buff[14] == RIGHT_LEFT_POSI)*1 + (buff[14] == RIGHT_LEFT_NEGI)*(-1);
+	
+	rc->kb_sc = 0;
+	if(buff[14] == KEY_SHIFT)				rc->kb_sc |= SHIFT; // kb_sc = 0...01 
+	if(buff[14] == KEY_CTRL)		    rc->kb_sc |= CTRL;  // kb_sc = 0...10
+																											// if shift and control is pressed together, kb_sc = 0...11
+	
   rc->sw1 = ((buff[5] >> 4) & 0x000C) >> 2;
   rc->sw2 = (buff[5] >> 4) & 0x0003;
   
@@ -99,7 +113,9 @@ void rc_callback_handler(rc_info_t *rc, uint8_t *buff)
       (abs(rc->ch4) > 660))
   {
     memset(rc, 0, sizeof(rc_info_t));
-  }		
+  }
+	
+	rc_dealler(rc);
 }
 
 /**
@@ -159,4 +175,42 @@ void dbus_uart_init(void)
 }
 
 
-
+/**
+	* @brief  calcu speed ref basing on rc data
+	* @param	remote: rc data to be passed in
+	* @retval
+*/
+void rc_dealler(const rc_info_t * remote)
+{
+	//ch2 for forward_back speed ref
+	//ch1 for left_right speed ref
+	//ch3 for rotation_ref
+	//rea means true value
+	//abs means absolute value
+	int16_t ch1_abs;
+	int16_t ch2_abs;
+	int16_t ch3_abs;
+	
+	//keyboard is not active
+	//keyboard has a higher priority over remote controller
+	if(remote->kb_ad == 0 && remote->kb_ws == 0)
+	{
+		ch1_abs = remote->ch1<0 ? -(remote->ch1):remote->ch1;
+	  ch2_abs = remote->ch2<0 ? -(remote->ch2):remote->ch2;
+		ch3_abs = remote->ch3<0 ? -(remote->ch3):remote->ch3;
+		chassis_ref.forward_back_speed_ref = remote->ch2>=10? remote->ch2 * ch2_abs * SPEED_CONST    : 0;
+		chassis_ref.left_right_speed_ref   = remote->ch1>=10? remote->ch1 * ch1_abs * SPEED_CONST    : 0;
+		chassis_ref.rotation_speed_ref     = remote->ch3>=10? remote->ch3 * ch3_abs * ROTATION_CONST : 0;
+	}
+	//keyboard is active
+	else
+	{
+		/*
+		to be added later
+		* two value mode: fast and normal
+		* control by shift
+		*/
+		chassis_ref.forward_back_speed_ref = remote->kb_ws*((remote->kb_sc == (uint8_t)SHIFT)? FAST_SPEED : NORMAL_SPEED);
+		chassis_ref.left_right_speed_ref   = remote->kb_ad*((remote->kb_sc == (uint8_t)SHIFT)? FAST_SPEED : NORMAL_SPEED);
+	}
+}
