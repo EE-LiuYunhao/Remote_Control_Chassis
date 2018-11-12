@@ -13,6 +13,7 @@
 #define __BSP_UART_H__
 
 #include "usart.h"
+#include "keyboard_def.h"
 
 #define UART_RX_DMA_SIZE (1024)
 #define DBUS_MAX_LEN     (50)
@@ -24,6 +25,7 @@
 /** 
   * @brief  remote control information
   */
+	
 typedef __packed struct
 {
   /* rocker channel information */
@@ -36,10 +38,8 @@ typedef __packed struct
 	int16_t ch5;//mouse-y
 	int16_t ch6;//mouse-x
 	int16_t ch7;//mouse-z
-	uint8_t kb_ws;//w and s key: w for 1 and s for -1
-	uint8_t kb_ad;//a and d key: a for ? and d for ?
-	uint8_t kb_sc;//shift and ctrl key
-	uint8_t kb_ot;//other keys
+	uint8_t kb_ctrl;//buffer channel 14, for chassis direction control
+	uint8_t kb_othe;//buffer channel 15, for other functions
 
   /* left and right lever information */
   uint8_t sw1;

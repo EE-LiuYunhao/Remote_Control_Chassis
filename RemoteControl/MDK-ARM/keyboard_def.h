@@ -9,11 +9,14 @@
  
 #define FAST_SPEED			 260 // speed ref for keyboard control
 #define NORMAL_SPEED		 100 // speed ref for keyboard control
-#define KEY_W						 0x01// buffer[14]
-#define KEY_S						 0x02// buffer[14]
-#define KEY_A						 0x04// buffer[14]
-#define KEY_D						 0x08// buffer[14]
-#define KEY_SHIFT				 0x10// buffer[14]
-#define KEY_CTRL				 0x20// buffer[14]
-#define SHIFT            1   // for rc->kb_sc, when shift is pressed
-#define CTRL						 2   // for rc->kb_sc, when ctrl is pressed
+#define ROTATION_SPEED	 150 // speed ref for keyboard control
+
+enum keys_14
+{
+	W = 0x01, S = 0x02, A = 0x04, D = 0x08, Shift = 0x10, Ctrl = 0x20, Q = 0x40, E = 0x80
+};
+
+enum keys_15
+{
+	R = 0x01, F = 0x02, G = 0x04, Z = 0x08, X = 0x10, C = 0x20, V = 0x40, B = 0x80
+};

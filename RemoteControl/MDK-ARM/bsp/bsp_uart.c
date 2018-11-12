@@ -13,10 +13,6 @@
 #include "bsp_uart.h"
 #include "usart.h"
 #include "main.h"
-#include "keyboard_def.h"
-
-#define RIGHT_LEFT_POSI  KEY_D
-#define RIGHT_LEFT_NEGI  KEY_A
 
 uint8_t   dbus_buf[DBUS_BUFLEN];
 rc_info_t rc;
@@ -96,13 +92,12 @@ void rc_callback_handler(rc_info_t *rc, uint8_t *buff)
   rc->ch4 = (buff[4] >> 1 | buff[5] << 7) & 0x07FF;
   rc->ch4 -= 1024;
 	
-	rc->kb_ws = (buff[14] == KEY_W)*1 + (buff[14]== KEY_S)*(-1);
-	rc->kb_ad = (buff[14] == RIGHT_LEFT_POSI)*1 + (buff[14] == RIGHT_LEFT_NEGI)*(-1);
+	rc->kb_ctrl = buff[14];
+	rc->kb_othe = buff[15];
 	
-	rc->kb_sc = 0;
-	if(buff[14] == KEY_SHIFT)				rc->kb_sc |= SHIFT; // kb_sc = 0...01 
-	if(buff[14] == KEY_CTRL)		    rc->kb_sc |= CTRL;  // kb_sc = 0...10
-																											// if shift and control is pressed together, kb_sc = 0...11
+	rc->ch5 = 0;
+	rc->ch6 = 0;
+	rc->ch7 = 0;
 	
   rc->sw1 = ((buff[5] >> 4) & 0x000C) >> 2;
   rc->sw2 = (buff[5] >> 4) & 0x0003;
@@ -193,7 +188,7 @@ void rc_dealler(const rc_info_t * remote)
 	
 	//keyboard is not active
 	//keyboard has a higher priority over remote controller
-	if(remote->kb_ad == 0 && remote->kb_ws == 0)
+	if(remote->kb_ctrl == 0) // no QWEASD Shift or Ctrl is pressed
 	{
 		ch1_abs = remote->ch1<0 ? -(remote->ch1):remote->ch1;
 	  ch2_abs = remote->ch2<0 ? -(remote->ch2):remote->ch2;
@@ -206,11 +201,22 @@ void rc_dealler(const rc_info_t * remote)
 	else
 	{
 		/*
-		to be added later
 		* two value mode: fast and normal
 		* control by shift
 		*/
-		chassis_ref.forward_back_speed_ref = remote->kb_ws*((remote->kb_sc == (uint8_t)SHIFT)? FAST_SPEED : NORMAL_SPEED);
-		chassis_ref.left_right_speed_ref   = remote->kb_ad*((remote->kb_sc == (uint8_t)SHIFT)? FAST_SPEED : NORMAL_SPEED);
+		int16_t speed_ref;
+		speed_ref = ((remote->kb_ctrl & Shift) == Shift ? FAST_SPEED: NORMAL_SPEED);
+		
+		if((remote->kb_ctrl & W) && !(remote->kb_ctrl & S))								chassis_ref.forward_back_speed_ref = speed_ref;
+		else if(!(remote->kb_ctrl & W) && (remote->kb_ctrl & S))					chassis_ref.forward_back_speed_ref = -1 * speed_ref;
+		else																															chassis_ref.forward_back_speed_ref = 0 ;
+		
+		if((remote->kb_ctrl & Q) && !(remote->kb_ctrl & E))								chassis_ref.left_right_speed_ref = speed_ref;
+		else if(!(remote->kb_ctrl & Q) && (remote->kb_ctrl & E))					chassis_ref.left_right_speed_ref = -1 * speed_ref;
+		else																															chassis_ref.left_right_speed_ref = 0;
+		
+		if((remote->kb_ctrl & D) && !(remote->kb_ctrl & A))								chassis_ref.rotation_speed_ref = ROTATION_SPEED;
+		else if(!(remote->kb_ctrl & D) && (remote->kb_ctrl & A))					chassis_ref.rotation_speed_ref = -1 * ROTATION_SPEED;
+		else																															chassis_ref.rotation_speed_ref = 0;
 	}
 }

@@ -34,6 +34,7 @@ remotecontrol\main.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h
 remotecontrol\main.o: ..\MDK-ARM\can.h
 remotecontrol\main.o: .\bsp\bsp_uart.h
 remotecontrol\main.o: ../Inc/usart.h
+remotecontrol\main.o: ..\MDK-ARM\keyboard_def.h
 remotecontrol\main.o: ../Inc/dma.h
 remotecontrol\main.o: ../Inc/tim.h
 remotecontrol\main.o: ../Inc/gpio.h
