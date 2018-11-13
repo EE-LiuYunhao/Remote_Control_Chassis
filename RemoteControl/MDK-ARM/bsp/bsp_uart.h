@@ -25,6 +25,16 @@
 /** 
   * @brief  remote control information
   */
+
+typedef __packed struct
+{
+	int16_t forward_back_direction;
+	int16_t left_right_direction;
+	int16_t rotation_direction;
+	int16_t speed_mood;
+}KbCtrl;
+
+#define NO_KEY_PRESSED(Control)			Control.forward_back_direction && Control.left_right_direction && Control.rotation_direction			
 	
 typedef __packed struct
 {
@@ -38,7 +48,7 @@ typedef __packed struct
 	int16_t ch5;//mouse-y
 	int16_t ch6;//mouse-x
 	int16_t ch7;//mouse-z
-	uint8_t kb_ctrl;//buffer channel 14, for chassis direction control
+	KbCtrl kb_ctrl;//buffer channel 14, for chassis direction control
 	uint8_t kb_othe;//buffer channel 15, for other functions
 
   /* left and right lever information */

@@ -7,9 +7,10 @@
  */
  
  
-#define FAST_SPEED			 260 // speed ref for keyboard control
-#define NORMAL_SPEED		 100 // speed ref for keyboard control
-#define ROTATION_SPEED	 150 // speed ref for keyboard control
+#define FAST_SPEED								200 // speed ref for keyboard control
+#define NORMAL_SPEED							100 // speed ref for keyboard control
+#define ROTATION_SPEED						150 // speed ref for keyboard control
+#define STOP_SPEED									0 // speed ref for keyboard control
 
 enum keys_14
 {
@@ -19,4 +20,20 @@ enum keys_14
 enum keys_15
 {
 	R = 0x01, F = 0x02, G = 0x04, Z = 0x08, X = 0x10, C = 0x20, V = 0x40, B = 0x80
+};
+
+
+enum forward_back_direction
+{
+	Forward = 1, Backward = -1, FB_Stop = 0
+};
+
+enum right_left_direction
+{
+	Right = 1, Left = -1, RL_Stop = 0
+};
+
+enum rotation_direction
+{
+	CW = 1, CCW = -1, RT_Stop = 0
 };

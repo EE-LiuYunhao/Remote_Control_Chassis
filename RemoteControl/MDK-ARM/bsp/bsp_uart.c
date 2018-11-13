@@ -92,7 +92,10 @@ void rc_callback_handler(rc_info_t *rc, uint8_t *buff)
   rc->ch4 = (buff[4] >> 1 | buff[5] << 7) & 0x07FF;
   rc->ch4 -= 1024;
 	
-	rc->kb_ctrl = buff[14];
+	rc->kb_ctrl.forward_back_direction =      (buff[14] & W)*Forward+((buff[14] & S)>>1)*Backward;
+	rc->kb_ctrl.left_right_direction   = ((buff[14] & E)>>7)*Right+((buff[14] & Q)>>6)*Left;
+	rc->kb_ctrl.rotation_direction     = ((buff[14] & D)>>3)*CW+((buff[14] & A)>>2)*CCW;
+	rc->kb_ctrl.speed_mood             = ((buff[14] & Shift)>>4)* FAST_SPEED + NORMAL_SPEED;
 	rc->kb_othe = buff[15];
 	
 	rc->ch5 = 0;
@@ -188,7 +191,8 @@ void rc_dealler(const rc_info_t * remote)
 	
 	//keyboard is not active
 	//keyboard has a higher priority over remote controller
-	if(remote->kb_ctrl == 0) // no QWEASD Shift or Ctrl is pressed
+	if(NO_KEY_PRESSED(remote->kb_ctrl))
+// no QWEASD Shift or Ctrl is pressed
 	{
 		ch1_abs = remote->ch1<0 ? -(remote->ch1):remote->ch1;
 	  ch2_abs = remote->ch2<0 ? -(remote->ch2):remote->ch2;
@@ -204,19 +208,8 @@ void rc_dealler(const rc_info_t * remote)
 		* two value mode: fast and normal
 		* control by shift
 		*/
-		int16_t speed_ref;
-		speed_ref = ((remote->kb_ctrl & Shift) == Shift ? FAST_SPEED: NORMAL_SPEED);
-		
-		if((remote->kb_ctrl & W) && !(remote->kb_ctrl & S))								chassis_ref.forward_back_speed_ref = speed_ref;
-		else if(!(remote->kb_ctrl & W) && (remote->kb_ctrl & S))					chassis_ref.forward_back_speed_ref = -1 * speed_ref;
-		else																															chassis_ref.forward_back_speed_ref = 0 ;
-		
-		if((remote->kb_ctrl & Q) && !(remote->kb_ctrl & E))								chassis_ref.left_right_speed_ref = speed_ref;
-		else if(!(remote->kb_ctrl & Q) && (remote->kb_ctrl & E))					chassis_ref.left_right_speed_ref = -1 * speed_ref;
-		else																															chassis_ref.left_right_speed_ref = 0;
-		
-		if((remote->kb_ctrl & D) && !(remote->kb_ctrl & A))								chassis_ref.rotation_speed_ref = ROTATION_SPEED;
-		else if(!(remote->kb_ctrl & D) && (remote->kb_ctrl & A))					chassis_ref.rotation_speed_ref = -1 * ROTATION_SPEED;
-		else																															chassis_ref.rotation_speed_ref = 0;
+		chassis_ref.forward_back_speed_ref = remote->kb_ctrl.forward_back_direction * remote->kb_ctrl.speed_mood;
+		chassis_ref.left_right_speed_ref   = remote->kb_ctrl.left_right_direction   * remote->kb_ctrl.speed_mood;
+		chassis_ref.rotation_speed_ref     = remote->kb_ctrl.rotation_direction     * ROTATION_SPEED;
 	}
 }
