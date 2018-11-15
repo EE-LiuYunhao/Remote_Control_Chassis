@@ -17,6 +17,7 @@
 uint8_t   dbus_buf[DBUS_BUFLEN];
 rc_info_t rc;
 chassis_ctrl chassis_ref;
+gimbal_ctrl gimbal_ref;
 
 
 
@@ -98,9 +99,12 @@ void rc_callback_handler(rc_info_t *rc, uint8_t *buff)
 	rc->kb_ctrl.speed_mood             = ((buff[14] & Shift)>>4)* FAST_SPEED + NORMAL_SPEED;
 	rc->kb_othe = buff[15];
 	
-	rc->ch5 = 0;
-	rc->ch6 = 0;
-	rc->ch7 = 0;
+	rc->ch5 = ((int16_t)buff[6]) | ((int16_t)buff[7]<<8);
+	rc->ch6 = ((int16_t)buff[8]) | ((int16_t)buff[9]<<8);
+	rc->ch7 = ((int16_t)buff[10]) | ((int16_t)buff[11]<<8);
+	
+	rc->ch8 = buff[12];
+	rc->ch9 = buff[13];
 	
   rc->sw1 = ((buff[5] >> 4) & 0x000C) >> 2;
   rc->sw2 = (buff[5] >> 4) & 0x0003;
@@ -114,6 +118,7 @@ void rc_callback_handler(rc_info_t *rc, uint8_t *buff)
   }
 	
 	rc_dealler(rc);
+	gimbal_dealer(rc);
 }
 
 /**
@@ -144,6 +149,8 @@ static void uart_rx_idle_callback(UART_HandleTypeDef* huart)
 	}
 }
 
+
+
 /**
   * @brief      callback this function when uart interrupt 
   * @param[in]  huart: uart IRQHandler id
@@ -172,9 +179,37 @@ void dbus_uart_init(void)
 	uart_receive_dma_no_it(&DBUS_HUART, dbus_buf, DBUS_MAX_LEN);
 }
 
+/**
+	*@brief: calcu the angel ref for the gimbal vertical movement
+	*@param: remoteValue: the value given by the remote controller
+					 mouseValue: the value given by the mouse
+					 State: the current state of the GIMBAL FSM
+					 direction_const: the const for calculation on that direction
+	*@retval: angle for the vertical movement
+*/
+int16_t gim_calcu(int16_t remoteValue,int16_t mouseValue,uint8_t State,double direction_const)
+{
+	/*
+	int16_t remoteAbs = remoteValue > 0 ? remoteValue : (-1)*remoteValue;
+	remoteAbs = remoteAbs > 10 ? remoteAbs : 0;
+	int16_t ret_val = mouseValue ? mouseValue*MOUSE_CONST : remoteValue*remoteAbs;
+	*/
+	return mouseValue ? mouseValue*MOUSE_CONST : remoteValue*REMOTE_ANGLE_CONST;
+}
 
 /**
-	* @brief  calcu speed ref basing on rc data
+	* @brief:calculate the angle ref for gimbal control
+	* @param: remote: a pointer to the remote control data
+	* @retval:
+**/
+void gimbal_dealer(rc_info_t * remote)
+{
+	gimbal_ref.horizontal_angle_ref += gim_calcu(remote->ch4,remote->ch5,remote->state,GIMBAL_HORIZONTAL_CONST);
+	gimbal_ref.vertical_angle_ref   += gim_calcu((-1*remote->ch3),remote->ch6,remote->state,GIMBAL_VERTICAL_CONST);
+}
+
+/**
+	* @brief  calcu speed and angle ref basing on rc data
 	* @param	remote: rc data to be passed in
 	* @retval
 */
@@ -191,15 +226,19 @@ void rc_dealler(const rc_info_t * remote)
 	
 	//keyboard is not active
 	//keyboard has a higher priority over remote controller
-	if(NO_KEY_PRESSED(remote->kb_ctrl))
+	if(NO_KEY_PRESSED(remote->kb_ctrl)
+		/*remote->kb_ctrl.forward_back_direction == 0 
+		&& remote->kb_ctrl.left_right_direction == 0 
+		&& remote->kb_ctrl.rotation_direction == 0
+		*/)
 // no QWEASD Shift or Ctrl is pressed
 	{
 		ch1_abs = remote->ch1<0 ? -(remote->ch1):remote->ch1;
 	  ch2_abs = remote->ch2<0 ? -(remote->ch2):remote->ch2;
 		ch3_abs = remote->ch3<0 ? -(remote->ch3):remote->ch3;
-		chassis_ref.forward_back_speed_ref = remote->ch2>=10? remote->ch2 * ch2_abs * SPEED_CONST    : 0;
-		chassis_ref.left_right_speed_ref   = remote->ch1>=10? remote->ch1 * ch1_abs * SPEED_CONST    : 0;
-		chassis_ref.rotation_speed_ref     = remote->ch3>=10? remote->ch3 * ch3_abs * ROTATION_CONST : 0;
+		chassis_ref.forward_back_speed_ref = ch2_abs > 10? remote->ch2 * ch2_abs * SPEED_CONST    : 0;
+		chassis_ref.left_right_speed_ref   = ch1_abs > 10? remote->ch1 * ch1_abs * SPEED_CONST    : 0;
+		chassis_ref.rotation_speed_ref     = ch3_abs > 10? remote->ch3 * ch3_abs * ROTATION_CONST : 0;
 	}
 	//keyboard is active
 	else
@@ -213,3 +252,4 @@ void rc_dealler(const rc_info_t * remote)
 		chassis_ref.rotation_speed_ref     = remote->kb_ctrl.rotation_direction     * ROTATION_SPEED;
 	}
 }
+

@@ -21,6 +21,10 @@
 #define DBUS_HUART       huart1 /* for dji remote controler reciever */
 #define SPEED_CONST			 0.00068 //the const for rc_dealer to calcu the speed ref
 #define ROTATION_CONST 	 0.00045 //the const for rc_dealer to calcu the rotate ref
+#define MOUSE_CONST			 100 //the const for calcu the gimbal angel ref when mouse is used
+#define REMOTE_ANGLE_CONST					50//the const for calcu the gimbal angel ref when remote controller is used
+#define GIMBAL_HORIZONTAL_CONST	0.0005//the const to calcu the gimbal angle ref
+#define GIMBAL_VERTICAL_CONST		0.0005//the const to calcu the gimbal angle ref
 
 /** 
   * @brief  remote control information
@@ -34,10 +38,11 @@ typedef __packed struct
 	int16_t speed_mood;
 }KbCtrl;
 
-#define NO_KEY_PRESSED(Control)			Control.forward_back_direction && Control.left_right_direction && Control.rotation_direction			
+#define NO_KEY_PRESSED(Control)			(Control.forward_back_direction==0 && Control.left_right_direction==0 && Control.rotation_direction==0)		
 	
 typedef __packed struct
 {
+	uint8_t state;
   /* rocker channel information */
   int16_t ch1;
   int16_t ch2;
@@ -48,6 +53,8 @@ typedef __packed struct
 	int16_t ch5;//mouse-y
 	int16_t ch6;//mouse-x
 	int16_t ch7;//mouse-z
+	uint8_t ch8;//mouse-l
+	uint8_t ch9;//mouse-r
 	KbCtrl kb_ctrl;//buffer channel 14, for chassis direction control
 	uint8_t kb_othe;//buffer channel 15, for other functions
 
@@ -65,14 +72,15 @@ typedef __packed struct
 
 typedef __packed struct
 {
-	int16_t forward_back_speed_ref;
-	int16_t left_right_speed_ref;
-	int16_t rotation_speed_ref;
-} km_info_t;
+	int16_t horizontal_angle_ref;
+	int16_t vertical_angle_ref;
+} gimbal_ctrl;
 
 void uart_receive_handler(UART_HandleTypeDef *huart);
 void dbus_uart_init(void);
 void USART_SendData(USART_TypeDef* USARTx, uint16_t Data);
 void rc_dealler(const rc_info_t *);
+int16_t gim_calcu(int16_t,int16_t,uint8_t,double);
+void gimbal_dealer(rc_info_t *);
 #endif
 

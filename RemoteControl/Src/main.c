@@ -55,6 +55,7 @@
 /* Private variables ---------------------------------------------------------*/
 extern rc_info_t rc;
 extern chassis_ctrl chassis_ref;
+extern gimbal_ctrl gimbal_ref;
 char buf[200];
 int count;
 uint8_t canRxMsg[8];
