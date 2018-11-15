@@ -1,11 +1,11 @@
 /**
  ***************************************(C) COPYRIGHT 2018 DJI***************************************
- * @file       bsp_uart.h
+ * @file       rc.h
  * @brief      this file contains the common defines and functions prototypes for 
- *             the bsp_uart.c driver
+ *             the rc.c driver
  * @note         
  * @Version    V1.0.0
- * @Date       Jan-30-2018      
+ * @Date       Nov-15-2018      
  ***************************************(C) COPYRIGHT 2018 DJI***************************************
  */
 

@@ -1,16 +1,16 @@
 /**
  ***************************************(C) COPYRIGHT 2018 DJI***************************************
- * @file       bsp_uart.c
+ * @file       rc.c
  * @brief      this file contains rc data receive and processing function
- * @note       
+ * @note
  * @Version    V1.0.0
- * @Date       Jan-30-2018
+ * @Date       Nov-15-2018
  ***************************************(C) COPYRIGHT 2018 DJI***************************************
  */
-                                                                                                              
+
 #include "string.h"
 #include "stdlib.h"
-#include "bsp_uart.h"
+#include "rc.h"
 #include "usart.h"
 #include "main.h"
 
@@ -24,7 +24,7 @@ gimbal_ctrl gimbal_ref;
 /**
   * @brief      enable global uart it and do not use DMA transfer done it
   * @param[in]  huart: uart IRQHandler id
-  * @param[in]  pData: receive buff 
+  * @param[in]  pData: receive buff
   * @param[in]  Size:  buff size
   * @retval     set success or fail
   */
@@ -33,7 +33,7 @@ static int uart_receive_dma_no_it(UART_HandleTypeDef* huart, uint8_t* pData, uin
   uint32_t tmp1 = 0;
 
   tmp1 = huart->RxState;
-	
+
 	if (tmp1 == HAL_UART_STATE_READY)
 	{
 		if ((pData == NULL) || (Size == 0))
@@ -48,9 +48,9 @@ static int uart_receive_dma_no_it(UART_HandleTypeDef* huart, uint8_t* pData, uin
 		/* Enable the DMA Stream */
 		HAL_DMA_Start(huart->hdmarx, (uint32_t)&huart->Instance->DR, (uint32_t)pData, Size);
 
-		/* 
+		/*
 		 * Enable the DMA transfer for the receiver request by setting the DMAR bit
-		 * in the UART CR3 register 
+		 * in the UART CR3 register
 		 */
 		SET_BIT(huart->Instance->CR3, USART_CR3_DMAR);
 
@@ -80,7 +80,7 @@ uint16_t dma_current_data_counter(DMA_Stream_TypeDef *dma_stream)
   * @brief       handle received rc data
   * @param[out]  rc:   structure to save handled rc data
   * @param[in]   buff: the buff which saved raw rc data
-  * @retval 
+  * @retval
   */
 void rc_callback_handler(rc_info_t *rc, uint8_t *buff)
 {
@@ -92,23 +92,23 @@ void rc_callback_handler(rc_info_t *rc, uint8_t *buff)
   rc->ch3 -= 1024;
   rc->ch4 = (buff[4] >> 1 | buff[5] << 7) & 0x07FF;
   rc->ch4 -= 1024;
-	
+
 	rc->kb_ctrl.forward_back_direction =      (buff[14] & W)*Forward+((buff[14] & S)>>1)*Backward;
 	rc->kb_ctrl.left_right_direction   = ((buff[14] & E)>>7)*Right+((buff[14] & Q)>>6)*Left;
 	rc->kb_ctrl.rotation_direction     = ((buff[14] & D)>>3)*CW+((buff[14] & A)>>2)*CCW;
 	rc->kb_ctrl.speed_mood             = ((buff[14] & Shift)>>4)* FAST_SPEED + NORMAL_SPEED;
 	rc->kb_othe = buff[15];
-	
+
 	rc->ch5 = ((int16_t)buff[6]) | ((int16_t)buff[7]<<8);
 	rc->ch6 = ((int16_t)buff[8]) | ((int16_t)buff[9]<<8);
 	rc->ch7 = ((int16_t)buff[10]) | ((int16_t)buff[11]<<8);
-	
+
 	rc->ch8 = buff[12];
 	rc->ch9 = buff[13];
-	
+
   rc->sw1 = ((buff[5] >> 4) & 0x000C) >> 2;
   rc->sw2 = (buff[5] >> 4) & 0x0003;
-  
+
   if ((abs(rc->ch1) > 660) || \
       (abs(rc->ch2) > 660) || \
       (abs(rc->ch3) > 660) || \
@@ -116,7 +116,7 @@ void rc_callback_handler(rc_info_t *rc, uint8_t *buff)
   {
     memset(rc, 0, sizeof(rc_info_t));
   }
-	
+
 	rc_dealler(rc);
 	gimbal_dealer(rc);
 }
@@ -124,7 +124,7 @@ void rc_callback_handler(rc_info_t *rc, uint8_t *buff)
 /**
   * @brief      clear idle it flag after uart receive a frame data
   * @param[in]  huart: uart IRQHandler id
-  * @retval  
+  * @retval
   */
 static void uart_rx_idle_callback(UART_HandleTypeDef* huart)
 {
@@ -140,9 +140,9 @@ static void uart_rx_idle_callback(UART_HandleTypeDef* huart)
 		/* handle dbus data dbus_buf from DMA */
 		if ((DBUS_MAX_LEN - dma_current_data_counter(huart->hdmarx->Instance)) == DBUS_BUFLEN)
 		{
-			rc_callback_handler(&rc, dbus_buf);	
+			rc_callback_handler(&rc, dbus_buf);
 		}
-		
+
 		/* restart dma transmission */
 		__HAL_DMA_SET_COUNTER(huart->hdmarx, DBUS_MAX_LEN);
 		__HAL_DMA_ENABLE(huart->hdmarx);
@@ -152,13 +152,13 @@ static void uart_rx_idle_callback(UART_HandleTypeDef* huart)
 
 
 /**
-  * @brief      callback this function when uart interrupt 
+  * @brief      callback this function when uart interrupt
   * @param[in]  huart: uart IRQHandler id
-  * @retval  
+  * @retval
   */
 void uart_receive_handler(UART_HandleTypeDef *huart)
-{  
-	if (__HAL_UART_GET_FLAG(huart, UART_FLAG_IDLE) && 
+{
+	if (__HAL_UART_GET_FLAG(huart, UART_FLAG_IDLE) &&
 			__HAL_UART_GET_IT_SOURCE(huart, UART_IT_IDLE))
 	{
 		uart_rx_idle_callback(huart);
@@ -166,9 +166,9 @@ void uart_receive_handler(UART_HandleTypeDef *huart)
 }
 
 /**
-  * @brief   initialize dbus uart device 
-  * @param   
-  * @retval  
+  * @brief   initialize dbus uart device
+  * @param
+  * @retval
   */
 void dbus_uart_init(void)
 {
@@ -223,12 +223,12 @@ void rc_dealler(const rc_info_t * remote)
 	int16_t ch1_abs;
 	int16_t ch2_abs;
 	int16_t ch3_abs;
-	
+
 	//keyboard is not active
 	//keyboard has a higher priority over remote controller
 	if(NO_KEY_PRESSED(remote->kb_ctrl)
-		/*remote->kb_ctrl.forward_back_direction == 0 
-		&& remote->kb_ctrl.left_right_direction == 0 
+		/*remote->kb_ctrl.forward_back_direction == 0
+		&& remote->kb_ctrl.left_right_direction == 0
 		&& remote->kb_ctrl.rotation_direction == 0
 		*/)
 // no QWEASD Shift or Ctrl is pressed
@@ -252,4 +252,3 @@ void rc_dealler(const rc_info_t * remote)
 		chassis_ref.rotation_speed_ref     = remote->kb_ctrl.rotation_direction     * ROTATION_SPEED;
 	}
 }
-

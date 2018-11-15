@@ -393,14 +393,19 @@
           <GroupName>Application/UserBsp</GroupName>
           <Files>
             <File>
-              <FileName>bsp_uart.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\bsp\bsp_uart.c</FilePath>
-            </File>
-            <File>
               <FileName>keyboard_def.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\keyboard_def.h</FilePath>
+            </File>
+            <File>
+              <FileName>rc.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\bsp\rc.c</FilePath>
+            </File>
+            <File>
+              <FileName>rc.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\bsp\rc.h</FilePath>
             </File>
           </Files>
         </Group>

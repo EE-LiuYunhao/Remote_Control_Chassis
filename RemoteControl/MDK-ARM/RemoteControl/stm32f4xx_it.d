@@ -32,7 +32,7 @@ remotecontrol\stm32f4xx_it.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_
 remotecontrol\stm32f4xx_it.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim_ex.h
 remotecontrol\stm32f4xx_it.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h
 remotecontrol\stm32f4xx_it.o: ../Inc/stm32f4xx_it.h
-remotecontrol\stm32f4xx_it.o: .\bsp\bsp_uart.h
+remotecontrol\stm32f4xx_it.o: ..\MDK-ARM\can.h
+remotecontrol\stm32f4xx_it.o: .\bsp\rc.h
 remotecontrol\stm32f4xx_it.o: ../Inc/usart.h
 remotecontrol\stm32f4xx_it.o: ..\MDK-ARM\keyboard_def.h
-remotecontrol\stm32f4xx_it.o: ..\MDK-ARM\can.h

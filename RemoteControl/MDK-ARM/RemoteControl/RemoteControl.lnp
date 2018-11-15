@@ -1,6 +1,6 @@
 --cpu=Cortex-M4.fp
 "remotecontrol\startup_stm32f427xx.o"
-"remotecontrol\bsp_uart.o"
+"remotecontrol\rc.o"
 "remotecontrol\stm32f4xx_hal_can.o"
 "remotecontrol\stm32f4xx_hal_tim.o"
 "remotecontrol\stm32f4xx_hal_tim_ex.o"

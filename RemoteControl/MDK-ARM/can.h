@@ -8,7 +8,7 @@ Please refer to can.c for documentation.
 /* ========== includes ========== */
 #include "main.h"
 #include "stm32f4xx_hal.h"
-#include "bsp_uart.h"
+#include "rc.h"
 /* ============================== */
 
 /* ========== headers ========== */

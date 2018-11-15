@@ -46,7 +46,7 @@
 #include "gpio.h"
 
 /* USER CODE BEGIN Includes */
-#include "bsp_uart.h"
+//rc.h has already be included in can.h, no need to include rc.h anymore
 /* USER CODE END Includes */
 
 /* Private variables ---------------------------------------------------------*/

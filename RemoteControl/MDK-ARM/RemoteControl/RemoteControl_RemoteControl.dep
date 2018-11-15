@@ -1,9 +1,10 @@
 Dependencies for Project 'RemoteControl', Target 'RemoteControl': (DO NOT MODIFY !)
 F (startup_stm32f427xx.s)(0x5BE7678A)(--cpu Cortex-M4.fp -g --apcs=interwork --pd "__MICROLIB SETA 1"-I.\RTE\_RemoteControl-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.4.0\CMSIS\Core\Include-IC:\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.13.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include--pd "__UVISION_VERSION SETA 526" --pd "_RTE_ SETA 1" --pd "STM32F427xx SETA 1"--list startup_stm32f427xx.lst --xref -o remotecontrol\startup_stm32f427xx.o --depend remotecontrol\startup_stm32f427xx.d)
-F (.\bsp\bsp_uart.c)(0x5BED1181)(--c99 -c --cpu Cortex-M4.fp -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I ../Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I ../Drivers/CMSIS/Include -I .\bsp -I ..\MDK-ARM-I.\RTE\_RemoteControl-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.4.0\CMSIS\Core\Include-IC:\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.13.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-D__UVISION_VERSION="526" -D_RTE_ -DSTM32F427xx -DUSE_HAL_DRIVER -DSTM32F427xx-o remotecontrol\bsp_uart.o --omf_browse remotecontrol\bsp_uart.crf --depend remotecontrol\bsp_uart.d)
+F (.\keyboard_def.h)(0x5BED0EBC)()
+F (.\bsp\rc.c)(0x5BED6D63)(--c99 -c --cpu Cortex-M4.fp -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I ../Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I ../Drivers/CMSIS/Include -I .\bsp -I ..\MDK-ARM-I.\RTE\_RemoteControl-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.4.0\CMSIS\Core\Include-IC:\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.13.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-D__UVISION_VERSION="526" -D_RTE_ -DSTM32F427xx -DUSE_HAL_DRIVER -DSTM32F427xx-o remotecontrol\rc.o --omf_browse remotecontrol\rc.crf --depend remotecontrol\rc.d)
 I (C:\Keil_v5\ARM\ARMCC\include\string.h)(0x599EDB3C)
 I (C:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x599EDB3C)
-I (bsp\bsp_uart.h)(0x5BED0EBC)
+I (bsp\rc.h)(0x5BED6D63)
 I (../Inc/usart.h)(0x5BE7678A)
 I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h)(0x5BE76789)
 I (../Inc/stm32f4xx_hal_conf.h)(0x5BE7678A)
@@ -37,7 +38,7 @@ I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim.h)(0x5BE7678A)
 I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim_ex.h)(0x5BE7678A)
 I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h)(0x5BE7678A)
 I (..\MDK-ARM\keyboard_def.h)(0x5BED0EBC)
-F (.\keyboard_def.h)(0x5BED0EBC)()
+F (.\bsp\rc.h)(0x5BED6D63)()
 F (..\Drivers\STM32F4xx_HAL_Driver\Src\stm32f4xx_hal_can.c)(0x5BE7678A)(--c99 -c --cpu Cortex-M4.fp -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I ../Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I ../Drivers/CMSIS/Include -I .\bsp -I ..\MDK-ARM-I.\RTE\_RemoteControl-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.4.0\CMSIS\Core\Include-IC:\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.13.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-D__UVISION_VERSION="526" -D_RTE_ -DSTM32F427xx -DUSE_HAL_DRIVER -DSTM32F427xx-o remotecontrol\stm32f4xx_hal_can.o --omf_browse remotecontrol\stm32f4xx_hal_can.crf --depend remotecontrol\stm32f4xx_hal_can.d)
 I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h)(0x5BE76789)
 I (../Inc/stm32f4xx_hal_conf.h)(0x5BE7678A)
@@ -551,7 +552,7 @@ I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pwr_ex.h)(0x5BE7678A)
 I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim.h)(0x5BE7678A)
 I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim_ex.h)(0x5BE7678A)
 I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h)(0x5BE7678A)
-F (../Src/main.c)(0x5BED0EBC)(--c99 -c --cpu Cortex-M4.fp -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I ..\MDK-ARM -I ../Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I ../Drivers/CMSIS/Include -I .\bsp -I ..\MDK-ARM-I.\RTE\_RemoteControl-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.4.0\CMSIS\Core\Include-IC:\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.13.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-D__UVISION_VERSION="526" -D_RTE_ -DSTM32F427xx -DUSE_HAL_DRIVER -DSTM32F427xx-o remotecontrol\main.o --omf_browse remotecontrol\main.crf --depend remotecontrol\main.d)
+F (../Src/main.c)(0x5BED6EE8)(--c99 -c --cpu Cortex-M4.fp -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I ..\MDK-ARM -I ../Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I ../Drivers/CMSIS/Include -I .\bsp -I ..\MDK-ARM-I.\RTE\_RemoteControl-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.4.0\CMSIS\Core\Include-IC:\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.13.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-D__UVISION_VERSION="526" -D_RTE_ -DSTM32F427xx -DUSE_HAL_DRIVER -DSTM32F427xx-o remotecontrol\main.o --omf_browse remotecontrol\main.crf --depend remotecontrol\main.d)
 I (../Inc/main.h)(0x5BE7678A)
 I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h)(0x5BE76789)
 I (../Inc/stm32f4xx_hal_conf.h)(0x5BE7678A)
@@ -583,8 +584,8 @@ I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pwr_ex.h)(0x5BE7678A)
 I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim.h)(0x5BE7678A)
 I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim_ex.h)(0x5BE7678A)
 I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h)(0x5BE7678A)
-I (..\MDK-ARM\can.h)(0x5BE7E8F4)
-I (.\bsp\bsp_uart.h)(0x5BED0EBC)
+I (..\MDK-ARM\can.h)(0x5BED6E3D)
+I (.\bsp\rc.h)(0x5BED6D63)
 I (../Inc/usart.h)(0x5BE7678A)
 I (..\MDK-ARM\keyboard_def.h)(0x5BED0EBC)
 I (../Inc/dma.h)(0x5BE7678A)
@@ -724,7 +725,7 @@ I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim_ex.h)(0x5BE7678A)
 I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h)(0x5BE7678A)
 I (../Inc/gpio.h)(0x5BE7678A)
 I (../Inc/dma.h)(0x5BE7678A)
-F (../Src/stm32f4xx_it.c)(0x5BE7678A)(--c99 -c --cpu Cortex-M4.fp -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I ..\MDK-ARM -I ../Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I ../Drivers/CMSIS/Include -I .\bsp -I ..\MDK-ARM-I.\RTE\_RemoteControl-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.4.0\CMSIS\Core\Include-IC:\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.13.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-D__UVISION_VERSION="526" -D_RTE_ -DSTM32F427xx -DUSE_HAL_DRIVER -DSTM32F427xx-o remotecontrol\stm32f4xx_it.o --omf_browse remotecontrol\stm32f4xx_it.crf --depend remotecontrol\stm32f4xx_it.d)
+F (../Src/stm32f4xx_it.c)(0x5BED6EB2)(--c99 -c --cpu Cortex-M4.fp -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I ..\MDK-ARM -I ../Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I ../Drivers/CMSIS/Include -I .\bsp -I ..\MDK-ARM-I.\RTE\_RemoteControl-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.4.0\CMSIS\Core\Include-IC:\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.13.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-D__UVISION_VERSION="526" -D_RTE_ -DSTM32F427xx -DUSE_HAL_DRIVER -DSTM32F427xx-o remotecontrol\stm32f4xx_it.o --omf_browse remotecontrol\stm32f4xx_it.crf --depend remotecontrol\stm32f4xx_it.d)
 I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h)(0x5BE76789)
 I (../Inc/stm32f4xx_hal_conf.h)(0x5BE7678A)
 I (../Inc/main.h)(0x5BE7678A)
@@ -757,10 +758,10 @@ I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim.h)(0x5BE7678A)
 I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim_ex.h)(0x5BE7678A)
 I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h)(0x5BE7678A)
 I (../Inc/stm32f4xx_it.h)(0x5BE7678A)
-I (.\bsp\bsp_uart.h)(0x5BED0EBC)
+I (..\MDK-ARM\can.h)(0x5BED6E3D)
+I (.\bsp\rc.h)(0x5BED6D63)
 I (../Inc/usart.h)(0x5BE7678A)
 I (..\MDK-ARM\keyboard_def.h)(0x5BED0EBC)
-I (..\MDK-ARM\can.h)(0x5BE7E8F4)
 F (../Src/stm32f4xx_hal_msp.c)(0x5BE7678A)(--c99 -c --cpu Cortex-M4.fp -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I ..\MDK-ARM -I ../Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I ../Drivers/CMSIS/Include -I .\bsp -I ..\MDK-ARM-I.\RTE\_RemoteControl-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.4.0\CMSIS\Core\Include-IC:\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.13.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-D__UVISION_VERSION="526" -D_RTE_ -DSTM32F427xx -DUSE_HAL_DRIVER -DSTM32F427xx-o remotecontrol\stm32f4xx_hal_msp.o --omf_browse remotecontrol\stm32f4xx_hal_msp.crf --depend remotecontrol\stm32f4xx_hal_msp.d)
 I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h)(0x5BE76789)
 I (../Inc/stm32f4xx_hal_conf.h)(0x5BE7678A)
@@ -794,7 +795,7 @@ I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim.h)(0x5BE7678A)
 I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim_ex.h)(0x5BE7678A)
 I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h)(0x5BE7678A)
 F (.\can.c)(0x5BE7E8F4)(--c99 -c --cpu Cortex-M4.fp -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I ..\MDK-ARM -I ../Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I ../Drivers/CMSIS/Include -I .\bsp -I ..\MDK-ARM-I.\RTE\_RemoteControl-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.4.0\CMSIS\Core\Include-IC:\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.13.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-D__UVISION_VERSION="526" -D_RTE_ -DSTM32F427xx -DUSE_HAL_DRIVER -DSTM32F427xx-o remotecontrol\can.o --omf_browse remotecontrol\can.crf --depend remotecontrol\can.d)
-I (can.h)(0x5BE7E8F4)
+I (can.h)(0x5BED6E3D)
 I (../Inc/main.h)(0x5BE7678A)
 I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h)(0x5BE76789)
 I (../Inc/stm32f4xx_hal_conf.h)(0x5BE7678A)
@@ -826,7 +827,7 @@ I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pwr_ex.h)(0x5BE7678A)
 I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim.h)(0x5BE7678A)
 I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim_ex.h)(0x5BE7678A)
 I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h)(0x5BE7678A)
-I (.\bsp\bsp_uart.h)(0x5BED0EBC)
+I (.\bsp\rc.h)(0x5BED6D63)
 I (../Inc/usart.h)(0x5BE7678A)
 I (..\MDK-ARM\keyboard_def.h)(0x5BED0EBC)
 I (C:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x599EDB3C)
