@@ -14,6 +14,7 @@
 
 #include "usart.h"
 #include "keyboard_def.h"
+#include <math.h>
 
 #define UART_RX_DMA_SIZE (1024)
 #define DBUS_MAX_LEN     (50)
@@ -39,7 +40,10 @@ typedef __packed struct
 }KbCtrl;
 
 #define NO_KEY_PRESSED(Control)			(Control.forward_back_direction==0 && Control.left_right_direction==0 && Control.rotation_direction==0)		
-	
+#define COMPLEMENT(x)   						abs(x)==180?180:(360-abs(x))*(-1)*(x/abs(x))
+#define ANGLE_DEALER(pangle)				abs(pangle)>=180?COMPLEMENT(pangle):pangle	
+
+
 typedef __packed struct
 {
 	uint8_t state;

@@ -35,4 +35,5 @@ remotecontrol\can.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h
 remotecontrol\can.o: .\bsp\rc.h
 remotecontrol\can.o: ../Inc/usart.h
 remotecontrol\can.o: ..\MDK-ARM\keyboard_def.h
+remotecontrol\can.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\math.h
 remotecontrol\can.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h

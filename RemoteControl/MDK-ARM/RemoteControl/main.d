@@ -35,6 +35,7 @@ remotecontrol\main.o: ..\MDK-ARM\can.h
 remotecontrol\main.o: .\bsp\rc.h
 remotecontrol\main.o: ../Inc/usart.h
 remotecontrol\main.o: ..\MDK-ARM\keyboard_def.h
+remotecontrol\main.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\math.h
 remotecontrol\main.o: ../Inc/dma.h
 remotecontrol\main.o: ../Inc/tim.h
 remotecontrol\main.o: ../Inc/gpio.h

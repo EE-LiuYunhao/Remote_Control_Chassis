@@ -206,6 +206,8 @@ void gimbal_dealer(rc_info_t * remote)
 {
 	gimbal_ref.horizontal_angle_ref += gim_calcu(remote->ch4,remote->ch5,remote->state,GIMBAL_HORIZONTAL_CONST);
 	gimbal_ref.vertical_angle_ref   += gim_calcu((-1*remote->ch3),remote->ch6,remote->state,GIMBAL_VERTICAL_CONST);
+	gimbal_ref.horizontal_angle_ref = ANGLE_DEALER(gimbal_ref.horizontal_angle_ref);
+	gimbal_ref.vertical_angle_ref   = ANGLE_DEALER(gimbal_ref.vertical_angle_ref);
 }
 
 /**

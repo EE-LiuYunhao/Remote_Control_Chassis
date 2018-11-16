@@ -36,3 +36,4 @@ remotecontrol\stm32f4xx_it.o: ..\MDK-ARM\can.h
 remotecontrol\stm32f4xx_it.o: .\bsp\rc.h
 remotecontrol\stm32f4xx_it.o: ../Inc/usart.h
 remotecontrol\stm32f4xx_it.o: ..\MDK-ARM\keyboard_def.h
+remotecontrol\stm32f4xx_it.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\math.h
